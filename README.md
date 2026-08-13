@@ -1,6 +1,37 @@
 # godot-cpp template
 This repository serves as a quickstart template for GDExtension development with Godot 4.0+.
 
+## DataView CSV API
+
+`DataView` is a small Godot-facing facade. Data formats are implemented behind
+an internal `IDataSource` interface, so GDScript does not depend on a CSV,
+spreadsheet, or database library.
+
+```gdscript
+var data := DataView.new()
+
+if not data.open("res://data/items.csv", {
+    "delimiter": ",",
+    "has_header": true,
+}):
+    push_error(data.get_last_error())
+    return
+
+var schema := data.get_schema("items")
+var visible_page := data.fetch({
+    "table": "items",
+    "offset": 100,
+    "limit": 30,
+})
+```
+
+The returned page contains `table`, `offset`, `count`, `total_count`,
+`columns`, and `rows`. A virtual table should update `offset` from its scroll
+position and keep `limit` close to the number of visible rows.
+
+CSV currently provides the `DataView.READ` capability. Writing, filtering,
+and sorting are intentionally left for later source-specific implementations.
+
 ## Contents
 * Preconfigured source files for C++ development of the GDExtension ([src/](./src/))
 * An empty Godot project in [project/](./project), to test the GDExtension

@@ -10,6 +10,10 @@ projectdir = "project"
 
 localEnv = Environment(tools=["default"], PLATFORM="")
 
+# csv-parser reports parse failures with C++ exceptions. godot-cpp disables
+# exceptions by default, so the extension must explicitly enable them.
+localEnv["disable_exceptions"] = False
+
 # Build profiles can be used to decrease compile times.
 # You can either specify "disabled_classes", OR
 # explicitly specify "enabled_classes" which disables all other classes.
@@ -37,8 +41,25 @@ Run the following command to download godot-cpp:
 
 env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
 
-env.Append(CPPPATH=["src/"])
-sources = Glob("src/*.cpp")
+env.Append(
+    CPPPATH=[
+        "src/",
+        "src/core/",
+        "src/sources/",
+        "thirdparty/csv-parser/include/",
+    ],
+    CPPDEFINES=[("CSV_ENABLE_THREADS", 0)],
+)
+
+sources = []
+sources += Glob("src/*.cpp")
+sources += Glob("src/core/*.cpp")
+sources += Glob("src/sources/*.cpp")
+
+# csv-parser 5.x keeps its implementation in these translation units. It is
+# linked into the GDExtension, so users only need the DataView native library.
+sources += Glob("thirdparty/csv-parser/include/internal/*.cpp")
+sources += Glob("thirdparty/csv-parser/include/internal/parser/*.cpp")
 
 if env["target"] in ["editor", "template_debug"]:
     try:

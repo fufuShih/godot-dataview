@@ -2,6 +2,11 @@
 *.gen.*
 .godot/
 
+# Godot treats arbitrary CSV files as translation sources. The DataView test
+# CSV is read directly, so its generated import sidecars are not source files.
+/project/data/*.csv.import
+/project/data/*.translation
+
 # Ignore library files but not the gdextension file
 /bin/**
 !project/bin/*.gdextension

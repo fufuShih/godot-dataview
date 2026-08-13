@@ -1,6 +1,6 @@
 #include "register_types.h"
 
-#include "dataview.h"
+#include "core/dataview.h"
 
 #include <godot_cpp/godot.hpp>
 
