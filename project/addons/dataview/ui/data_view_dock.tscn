@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/dataview/ui/data_view_dock.gd" id="1_dock"]
+[ext_resource type="PackedScene" path="res://addons/dataview/ui/virtual_data_table.tscn" id="2_table"]
+
+[node name="DataViewDock" type="VBoxContainer"]
+custom_minimum_size = Vector2(640, 300)
+theme_override_constants/separation = 6
+script = ExtResource("1_dock")
+
+[node name="Toolbar" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Browse" type="Button" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Open CSV…"
+
+[node name="Path" type="LineEdit" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "res://data/items.csv or an absolute path"
+clear_button_enabled = true
+
+[node name="Reload" type="Button" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reload"
+
+[node name="DelimiterLabel" type="Label" parent="Toolbar"]
+layout_mode = 2
+text = "Delimiter"
+vertical_alignment = 1
+
+[node name="Delimiter" type="LineEdit" parent="Toolbar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(34, 0)
+layout_mode = 2
+text = ","
+max_length = 1
+alignment = 1
+
+[node name="HasHeader" type="CheckBox" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Header"
+
+[node name="Status" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose a CSV file to inspect."
+text_overrun_behavior = 3
+
+[node name="VirtualDataTable" parent="." instance=ExtResource("2_table")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open CSV"
+initial_position = 2
+size = Vector2i(900, 600)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.csv ; CSV files")
