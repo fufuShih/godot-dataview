@@ -6,7 +6,7 @@ from methods import print_error
 
 
 libname = "dataview"
-projectdir = "project"
+projectdir = "project/addons/dataview"
 
 localEnv = Environment(tools=["default"], PLATFORM="")
 
